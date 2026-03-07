@@ -1,29 +1,55 @@
-# 🛡️ SheProof
+# SheProof
 
-SheProof is a decentralized document verification platform built on Ethereum.
+Tamper-Proof Digital Evidence Verification using Blockchain.
 
-It enables users to generate tamper-proof, timestamped proof of ownership for any digital document or screenshot — without uploading the file to any server.
+SheProof enables users to generate immutable proof of existence for any digital file or screenshot without uploading the file itself.
 
-Only the SHA-256 cryptographic hash of the file is stored on-chain.
+Only the SHA-256 cryptographic hash of the document is stored on the blockchain.
 
 ---
 
-# 🌍 Problem Statement
+## 3-Line Pitch
+
+SheProof makes digital evidence tamper-proof.
+
+The system generates a cryptographic fingerprint of files and records it on blockchain to create immutable proof of authenticity.
+
+Upload a file and instantly verify whether it has been altered.
+
+---
+
+## Problem Frame
+
+User  
+People facing online harassment, fraud, or digital disputes who rely on screenshots, images, or videos as evidence.
+
+Problem  
+Digital files can easily be edited or manipulated, making it difficult to prove whether the evidence is authentic.
+
+Constraints  
+The system must protect user privacy, avoid storing large files directly on the blockchain, and remain simple for non-technical users.
+
+Success Test  
+A user can upload a file, store its cryptographic proof on blockchain, and later verify whether the file has been altered.
+
+---
+
+## Problem Statement
 
 Digital documents can be:
 
-- Edited
-- Manipulated
-- Backdated
-- Claimed by others
+- Edited  
+- Manipulated  
+- Backdated  
+- Claimed by others  
 
 Traditional verification methods rely on centralized authorities.
 
-SheProof eliminates this by using blockchain immutability.
+SheProof removes this dependency by using blockchain immutability and cryptographic hashing.
 
 ---
 
-# 💡 Solution
+## Solution
 
 SheProof creates:
 
@@ -38,65 +64,58 @@ No file ever leaves the user's device.
 
 ---
 
-# 🏗️ System Architecture
-            ┌──────────────────────┐
-            │      User Device     │
-            │  (Browser / Extension)│
-            └──────────┬───────────┘
-                       │
-                       ▼
-            ┌──────────────────────┐
-            │ React + Vite Frontend│
-            │ - File Upload        │
-            │ - Screenshot Capture │
-            │ - SHA-256 Hashing    │
-            └──────────┬───────────┘
-                       │
-                       ▼
-            ┌──────────────────────┐
-            │    Ethers.js Layer   │
-            │ - Wallet Connect     │
-            │ - Transaction Send   │
-            └──────────┬───────────┘
-                       │
-                       ▼
-            ┌──────────────────────┐
-            │ Solidity Smart Contract│
-            │  Ethereum Sepolia    │
-            │ - Store hash         │
-            │ - Store owner        │
-            │ - Store timestamp    │
-            └──────────────────────┘
+## System Architecture
 
+User Device (Browser / Extension)
+
+↓
+
+React + Vite Frontend  
+File Upload  
+Screenshot Capture  
+SHA-256 Hashing  
+
+↓
+
+Ethers.js Integration  
+Wallet Connection  
+Transaction Handling  
+
+↓
+
+Solidity Smart Contract  
+Ethereum Sepolia Network  
+Store Hash  
+Store Owner  
+Store Timestamp
 
 ---
 
-# 🔐 How It Works
+## How It Works
 
-## 1️⃣ Upload / Screenshot
+### 1. Upload / Screenshot
 
-User:
-- Uploads file
-- OR captures screenshot (via extension or UI)
+User uploads a file or captures a screenshot.
 
-## 2️⃣ Hash Generation (Client-side)
+### 2. Hash Generation
 
-Browser computes:
+The browser computes:
+
+```
 SHA-256(file)
+```
 
+Example hash:
 
-Example:
+```
 0x3a6f...9d21
+```
 
+Even a one-byte change produces a completely different hash.
 
-This ensures:
+### 3. Store on Blockchain
 
-- Even 1-byte change = completely different hash
-- Zero file storage on server
-
-## 3️⃣ Store On Blockchain
-
-Smart contract stores:
+The smart contract stores:
 
 ```solidity
 mapping(bytes32 => Proof)
@@ -105,160 +124,187 @@ struct Proof {
     address owner;
     uint256 timestamp;
 }
+```
 
-4️⃣ Verification
+### 4. Verification
 
-User uploads file again:
+User uploads the file again.
 
-      Hash recalculated
-      Compared with blockchain mapping
-      Displays:
-            Owner wallet
-            Timestamp
-            Verification status
+The system:
 
-🧩 Project Structure
-SheProof/
-│
-├── frontend/        # React + Vite Application
-│   ├── pages/
-│   ├── components/
-│   ├── utils/
-│
-├── blockchain/      # Solidity Smart Contract
-│   ├── contracts/
-│   ├── scripts/
-│
-├── extension/       # Chrome Extension (Manifest V3)
-│   ├── popup.js
-│   ├── manifest.json
-│
-└── README.md
+- Recalculates the hash
+- Compares it with the blockchain record
+- Displays owner wallet and timestamp
 
-Security Properties
+---
 
-Immutable timestamp
+## Key Features
 
-Wallet-based identity
+- Tamper-proof document verification
+- Blockchain timestamping
+- Wallet-based ownership proof
+- Public verification system
+- Certificate download
+- Screenshot hashing
+- Chrome extension support
+- Privacy-preserving design
 
-Cannot overwrite existing proof
+---
 
-Fully transparent on Etherscan
+## Tech Stack
 
-🌐 Chrome Extension Flow
-
-Capture visible tab
-
-Convert image to ArrayBuffer
-
-Generate SHA-256 hash
-
-Open SheProof upload page
-
-Auto-fill screenshot for proof storage
-
-📜 Certificate System
-
-After successful verification:
-
-User can download PDF certificate
-
-Includes:
-
-Document hash
-
-Owner wallet
-
-Blockchain timestamp
-
-Network name
-
-Screenshot preview
-
-🛡️ Security Design
-
-No backend server
-
-No file uploads
-
-No centralized database
-
-Pure client-side hashing
-
-On-chain immutable record
-
-Wallet-based cryptographic identity
-
-⚡ Tech Stack
 Frontend
 
-React
-
-Vite
-
-Ethers.js
-
-jsPDF
-
-Neo-Brutalism UI
+- React
+- Vite
+- Ethers.js
+- jsPDF
 
 Blockchain
 
-Solidity
-
-Hardhat
-
-Ethereum Sepolia
+- Solidity
+- Hardhat
+- Ethereum Sepolia Testnet
 
 Extension
 
-Chrome Manifest V3
+- Chrome Extension (Manifest V3)
+- Web Crypto API
 
-Web Crypto API
+---
 
-📊 Key Features
-
-✔ Tamper-proof document verification
-✔ Blockchain timestamping
-✔ Wallet-based ownership
-✔ Public verification link
-✔ Certificate download
-✔ Chrome extension integration
-✔ Screenshot hashing
-✔ Neo-Brutalism UI
-
-🚀 Future Enhancements
-
-IPFS optional storage
-
-Multi-chain support
-
-NFT-based proof minting
-
-QR-based verification sharing
-
-Institutional verification dashboard
-
-AI-powered document integrity checks
-
-🧪 Network
+## Network
 
 Ethereum Sepolia Testnet
 
-🏆 Why SheProof Is Unique
+---
 
-Unlike traditional verification systems:
+## Project Structure
 
-No centralized authority
+```
+SheProof
+│
+├── frontend
+│   ├── pages
+│   ├── components
+│   └── utils
+│
+├── blockchain
+│   ├── contracts
+│   └── scripts
+│
+├── extension
+│   ├── popup.js
+│   └── manifest.json
+│
+├── docs
+│   ├── decision-log.md
+│   ├── evidence-log.md
+│   └── risk-log.md
+│
+├── README.md
+├── LICENSE
+└── .env.example
+```
 
-No file storage
+---
 
-No server dependency
+## Quickstart
 
-Fully decentralized integrity proof
+Clone the repository
 
-Extension-powered instant web proof
+```
+git clone https://github.com/mohamed-kaif-1/SheProof.git
+```
 
-👨‍💻 Developed By
+Install dependencies
 
-Mohamed Kaif & Team
+```
+npm install
+```
+
+Run development server
+
+```
+npm run dev
+```
+
+Open in browser
+
+```
+http://localhost:5173
+```
+
+---
+
+## Decision Log
+
+Decision  
+Store only the cryptographic hash of files on blockchain instead of storing entire files.
+
+Reason  
+Blockchain storage is expensive and inefficient for large files.
+
+Result  
+Improves scalability while preserving privacy.
+
+---
+
+## Evidence Log
+
+- SHA-256 hashing used for file fingerprinting
+- Ethereum blockchain used for immutable timestamping
+- Open-source libraries used according to their licenses
+
+Example blockchain transaction
+
+https://sepolia.etherscan.io/tx/0xdfe4d3d05ab099d78b21a2776908d7c78bfedb7e3c94bb5b1f8ef37c750a9fe0
+
+---
+
+## Risk Log
+
+Risk  
+Users may upload modified versions of the same file.
+
+Fix  
+SHA-256 hashing ensures even the smallest modification generates a completely different hash.
+
+---
+
+## Security Design
+
+- No backend server
+- No file uploads
+- No centralized database
+- Client-side hashing
+- On-chain immutable record
+- Wallet-based identity
+
+---
+
+## Live Demo
+
+https://sheproof.netlify.app/
+
+---
+
+## Repository
+
+https://github.com/mohamed-kaif-1/SheProof
+
+---
+
+## License
+
+MIT License
+
+---
+
+## Team
+
+| Name | Role |
+|-----|-----|
+| Mohamed Kaif | Blockchain Development and Deployment |
+| Aasim | Frontend Development |
+| Mabel Mercita | Testing and Documentation |
